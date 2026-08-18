@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Astronomy Picture of the Day</title>
+
+    <!-- LINK TO SEPARATE CSS FILE -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Left Sidebar Column: Fun Fact / Planet Fact / Solar System / Moons -->
+    <div class="sidebar-column">
+        <div class="icon-wrapper">
+            <button id="fun-fact-btn" class="icon-btn pink-star" title="Random space fact">★</button>
+            <div id="fun-fact-popup" class="fact-popup hidden">
+                <div class="popup-decor">✨ 🌙 ✨</div>
+                <p id="fun-fact-text">Loading...</p>
+            </div>
+        </div>
+        <div class="icon-wrapper">
+            <button id="planet-fact-btn" class="icon-btn purple-star" title="Solar system fact">★</button>
+            <div id="planet-fact-popup" class="fact-popup hidden">
+                <div class="popup-decor">🌕 ・ ✦ ・ 🌑</div>
+                <p id="planet-fact-text">Loading...</p>
+            </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <button id="solar-system-btn" class="solar-btn" title="Jump to the Solar System">☉ SOLAR SYSTEM</button>
+        <button id="moons-btn" class="moons-btn" title="Discover the moons">✦ DISCOVER THE MOONS</button>
+    </div>
+
+    <!-- Header Section -->
+    <header>
+        <h1>
+            <span class="icon">🌙</span>
+            NASA Astronomy Picture of the Day
+        </h1>
+        <p id="subtitle">Discover the cosmos through NASA's API!!</p>
+    </header>
+
+    <!-- Date Picker Controls -->
+    <div class="controls">
+        <label for="date-select">Choose a Space Date:</label>
+        <input type="date" id="date-select" min="1995-06-16">
+        <button id="fetch-date-btn">Explore Date 🚀</button>
+    </div>
+
+    <!-- Loading Message -->
+    <div id="loading">Fetching space image... 🚀</div>
+
+    <!-- Content Container -->
+    <div id="apod-card" class="card hidden">
+        <h2 id="apod-title"></h2>
+        <p class="date" id="apod-date"></p>
+
+        <div class="media-frame">
+            <img id="apod-image" src="" alt="NASA APOD" class="hidden">
+            <iframe id="apod-video" src="" class="hidden" frameborder="0" allowfullscreen title="APOD video"></iframe>
+        </div>
+
+        <p class="explanation" id="apod-explanation"></p>
+    </div>
+
+    <!-- Solar System Section -->
+    <section id="solar-system" class="solar-section">
+        <h2 class="solar-heading">☉ The Solar System</h2>
+        <p class="solar-subheading">Hover over any world &mdash; don't click, just linger &mdash; to see what makes it unique.</p>
+
+        <div class="solar-grid">
+
+            <div class="planet-card">
+                <div class="planet-frame">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg" alt="The Sun" loading="lazy">
+                </div>
+                <div class="planet-info">
+                    <h3>The Sun</h3>
+                    <p>Our star holds about 99.8% of the entire solar system's mass. It's a giant ball of hydrogen and helium fusing at its core, and light from its surface takes roughly 8 minutes to reach Earth.</p>
+                </div>
+            </div>
+
+            <div class="planet-card">
+                <div class="planet-frame">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Mercury_in_true_color.jpg" alt="Mercury" loading="lazy">
+                </div>
+                <div class="planet-info">
+                    <h3>Mercury</h3>
+                    <p>The smallest and innermost planet, Mercury has almost no atmosphere to hold in heat, so its surface swings from scorching days to freezing nights. A year here lasts just 88 Earth days.</p>
+                </div>
+            </div>
+
+            <div class="planet-card">
+                <div class="planet-frame">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Venus-real_color.jpg" alt="Venus" loading="lazy">
+                </div>
+                <div class="planet-info">
+                    <h3>Venus</h3>
+                    <p>Wrapped in thick, toxic clouds, Venus is the hottest planet in the solar system thanks to a runaway greenhouse effect. Oddly, its day is longer than its year.</p>
+                </div>
+            </div>
+
+            <div class="planet-card">
+                <div class="planet-frame">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg" alt="Earth" loading="lazy">
+                </div>
+                <div class="planet-info">
+                    <h3>Earth</h3>
+                    <p>Our home, and the only known world with liquid water on its surface and life. It's also the only planet in the solar system not named after a mythological god.</p>
+                </div>
+            </div>
+
+            <div class="planet-card">
+                <div class="planet-frame">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg" alt="Mars" loading="lazy">
+                </div>
+                <div class="planet-info">
+                    <h3>Mars</h3>
+                    <p>The Red Planet gets its color from iron oxide dust on its surface. It's home to Olympus Mons, the tallest volcano in the solar system, standing nearly three times the height of Everest.</p>
+                </div>
+            </div>
+
+            <div class="planet-card">
+                <div class="planet-frame">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Jupiter_and_its_shrunken_Great_Red_Spot.jpg" alt="Jupiter" loading="lazy">
+                </div>
+                <div class="planet-info">
+                    <h3>Jupiter</h3>
+                    <p>The largest planet by far, Jupiter is a swirling giant of gas with a storm &mdash; the Great Red Spot &mdash; big enough to swallow Earth whole. Over 1,300 Earths could fit inside it.</p>
+                </div>
+            </div>
+
+            <div class="planet-card">
+                <div class="planet-frame">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Saturn_during_Equinox.jpg" alt="Saturn" loading="lazy">
+                </div>
+                <div class="planet-info">
+                    <h3>Saturn</h3>
+                    <p>Famous for its dazzling rings made of ice and rock, Saturn is so light it would actually float in water, if you could find a bathtub large enough.</p>
+                </div>
+            </div>
+
+            <div class="planet-card">
+                <div class="planet-frame">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Uranus2.jpg" alt="Uranus" loading="lazy">
+                </div>
+                <div class="planet-info">
+                    <h3>Uranus</h3>
+                    <p>This ice giant rotates almost completely on its side, likely the result of an ancient collision, so it essentially rolls around the Sun rather than spinning upright.</p>
+                </div>
+            </div>
+
+            <div class="planet-card">
+                <div class="planet-frame">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/56/Neptune_Full.jpg" alt="Neptune" loading="lazy">
+                </div>
+                <div class="planet-info">
+                    <h3>Neptune</h3>
+                    <p>The most distant planet is also the windiest, with gusts clocked at over 2,100 km/h &mdash; the fastest in the solar system. Its deep blue color comes from methane in its atmosphere.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Moons Section -->
+    <section id="moons" class="solar-section moon-section">
+        <h2 class="moon-heading">✦ The Moons</h2>
+        <p class="solar-subheading">Hover over any moon &mdash; don't click, just linger &mdash; to see which world it belongs to.</p>
+
+        <div class="moon-grid">
+
+            <div class="moon-card">
+                <div class="moon-frame-wrap">
+                    <div class="moon-photo">
+                        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/FullMoon2010.jpg" alt="The Moon" loading="lazy">
+                    </div>
+                </div>
+                <div class="moon-info">
+                    <h3>The Moon</h3>
+                    <p class="moon-planet-tag">Moon of Earth</p>
+                    <p class="moon-desc">Earth's only natural satellite formed roughly 4.5 billion years ago, likely from debris after a Mars-sized body struck the young Earth. Its gravity is why our oceans have tides.</p>
+                </div>
+            </div>
+
+            <div class="moon-card">
+                <div class="moon-frame-wrap">
+                    <div class="moon-photo">
+                        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Phobos_colour_2008.jpg" alt="Phobos" loading="lazy">
+                    </div>
+                </div>
+                <div class="moon-info">
+                    <h3>Phobos</h3>
+                    <p class="moon-planet-tag">Moon of Mars</p>
+                    <p class="moon-desc">The larger of Mars's two lumpy, crater-covered moons, Phobos orbits so close to the planet that it circles Mars three times a day, and it's slowly spiraling inward.</p>
+                </div>
+            </div>
+
+            <div class="moon-card">
+                <div class="moon-frame-wrap">
+                    <div class="moon-photo">
+                        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Io_highest_resolution_true_color.jpg" alt="Io" loading="lazy">
+                    </div>
+                </div>
+                <div class="moon-info">
+                    <h3>Io</h3>
+                    <p class="moon-planet-tag">Moon of Jupiter</p>
+                    <p class="moon-desc">The most volcanically active body in the solar system, Io is squeezed and stretched by Jupiter's immense gravity, erupting molten rock hundreds of kilometers into space.</p>
+                </div>
+            </div>
+
+            <div class="moon-card">
+                <div class="moon-frame-wrap">
+                    <div class="moon-photo">
+                        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Titan_in_true_color.jpg" alt="Titan" loading="lazy">
+                    </div>
+                </div>
+                <div class="moon-info">
+                    <h3>Titan</h3>
+                    <p class="moon-planet-tag">Moon of Saturn</p>
+                    <p class="moon-desc">Saturn's largest moon is the only moon with a thick atmosphere, and the only place besides Earth known to have rivers, lakes, and rain &mdash; made of liquid methane instead of water.</p>
+                </div>
+            </div>
+
+            <div class="moon-card">
+                <div class="moon-frame-wrap">
+                    <div class="moon-photo">
+                        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Triton_moon_mosaic_Voyager_2_(large).jpg" alt="Triton" loading="lazy">
+                    </div>
+                </div>
+                <div class="moon-info">
+                    <h3>Triton</h3>
+                    <p class="moon-planet-tag">Moon of Neptune</p>
+                    <p class="moon-desc">Neptune's largest moon orbits backward compared to Neptune's rotation, a strong hint that it was once a captured world from the icy Kuiper Belt rather than born alongside its planet.</p>
+                </div>
+            </div>
+
+            <div class="moon-card">
+                <div class="moon-frame-wrap">
+                    <div class="moon-photo">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Charon_Color_HighestRes.jpg" alt="Charon" loading="lazy">
+                    </div>
+                </div>
+                <div class="moon-info">
+                    <h3>Charon</h3>
+                    <p class="moon-planet-tag">Moon of Pluto</p>
+                    <p class="moon-desc">Charon is so large relative to Pluto that the two don't quite orbit like a planet and moon &mdash; they orbit a shared point in space between them, more like a double world.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- JavaScript: NASA API Logic -->
+    <script type="module">
+        const apiKey = '3rMtCbLfNz7MUeo07opoB1NAq2XOYfYHjqqzwbTU';
+
+        const dateInput = document.getElementById('date-select');
+        const fetchBtn = document.getElementById('fetch-date-btn');
+
+        // 1. Set maximum date limit to today
+        function getLocalDateString(date = new Date()) {
+            const offset = date.getTimezoneOffset();
+            const local = new Date(date.getTime() - offset * 60000);
+            return local.toISOString().split('T')[0];
+        }
+        const today = getLocalDateString();
+        dateInput.max = today;
+        dateInput.value = today;
+
+        // 1b. Wobble subtitle: wrap each letter in its own animated span
+        (function wobbleSubtitle() {
+            const subtitle = document.getElementById('subtitle');
+            const text = subtitle.textContent;
+            subtitle.textContent = '';
+            [...text].forEach((char, i) => {
+                const span = document.createElement('span');
+                span.textContent = char === ' ' ? '\u00A0' : char;
+                span.classList.add('wobble-letter');
+                span.style.animationDelay = `${i * 0.05}s`;
+                subtitle.appendChild(span);
+            });
+        })();
+
+        // 1c. Falling glitter — spawned when the date changes / Explore is clicked, run for 3s then stop.
+        // Pure CSS shapes (dots, sparks, tiny moons) — no emoji.
+        function spawnFallingSparkles() {
+            const types = ['glint', 'glint', 'spark', 'spark', 'spark', 'moon'];
+            const spawnOne = () => {
+                const sparkle = document.createElement('span');
+                const type = types[Math.floor(Math.random() * types.length)];
+                sparkle.className = `sparkle-fall ${type}`;
+                sparkle.style.left = `${Math.random() * 100}vw`;
+                const duration = 1.5 + Math.random() * 1;
+                sparkle.style.animationDuration = `${duration}s`;
+                document.body.appendChild(sparkle);
+                sparkle.addEventListener('animationend', () => sparkle.remove());
+            };
+            const interval = setInterval(spawnOne, 120);
+            setTimeout(() => clearInterval(interval), 3000);
+        }
+
+        // 1d. Butterflies — spawned when "Discover the Moons" is clicked, fly right-to-left, then clean up.
+        function spawnButterflies() {
+            const wingMarkup = `<svg viewBox="0 0 60 50" xmlns="http://www.w3.org/2000/svg">
+                <path d="M30 25 C10 4, -6 6, 4 25 C -6 44, 10 46, 30 25 Z" fill="#d9b8ff" opacity="0.92"></path>
+                <path d="M30 25 C50 4, 66 6, 56 25 C 66 44, 50 46, 30 25 Z" fill="#ffc2e2" opacity="0.92"></path>
+                <ellipse cx="30" cy="25" rx="2.4" ry="13" fill="#3d2a5c"></ellipse>
+                <circle cx="30" cy="12.5" r="2" fill="#3d2a5c"></circle>
+            </svg>`;
+            const verticalPositions = [16, 40];
+            verticalPositions.forEach((topPercent, i) => {
+                const butterfly = document.createElement('div');
+                butterfly.className = 'butterfly';
+                butterfly.style.top = `${topPercent}%`;
+                butterfly.style.animationDuration = `${4.2 + i * 0.7}s`;
+                butterfly.style.animationDelay = `${i * 0.35}s`;
+                butterfly.innerHTML = wingMarkup;
+                document.body.appendChild(butterfly);
+                butterfly.addEventListener('animationend', (e) => {
+                    if (e.target === butterfly) butterfly.remove();
+                });
+            });
+        }
+
+        // 2. Fetch data from NASA API
+        let requestId = 0;
+        async function fetchAPOD(selectedDate = '') {
+            const thisRequest = ++requestId;
+
+            document.getElementById('loading').innerText = 'Fetching space image... 🚀';
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('apod-card').classList.add('hidden');
+
+            document.getElementById('apod-image').src = '';
+            document.getElementById('apod-video').src = '';
+
+            let apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
+            if (selectedDate) {
+                apiUrl += `&date=${selectedDate}`;
+            }
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => null);
+                    throw new Error(errData?.msg || 'Could not retrieve image for this date.');
+                }
+
+                const data = await response.json();
+                if (thisRequest !== requestId) return; // a newer request superseded this one
+
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('apod-card').classList.remove('hidden');
+
+                document.getElementById('apod-title').innerText = data.title;
+                document.getElementById('apod-date').innerText = `Date: ${data.date}`;
+                document.getElementById('apod-explanation').innerText = data.explanation;
+
+                if (data.media_type === 'image') {
+                    const imgElement = document.getElementById('apod-image');
+                    imgElement.src = data.url;
+                    imgElement.alt = data.title || 'NASA Astronomy Picture of the Day';
+                    imgElement.classList.remove('hidden');
+                } else if (data.media_type === 'video') {
+                    const videoElement = document.getElementById('apod-video');
+                    videoElement.src = data.url;
+                    videoElement.classList.remove('hidden');
+                } else {
+                    document.getElementById('apod-explanation').innerText +=
+                        '\n\n(No previewable media available for this entry.)';
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loading').innerText = `Failed to load: ${error.message}`;
+            }
+        }
+
+        // 3. Handle button clicks — falling glitter + fetch the chosen date
+        fetchBtn.addEventListener('click', () => {
+            spawnFallingSparkles();
+            const chosenDate = dateInput.value;
+            if (chosenDate) {
+                fetchAPOD(chosenDate);
+            }
+        });
+
+        // Also spawn glitter the moment the date value itself changes
+        dateInput.addEventListener('change', spawnFallingSparkles);
+
+        // Run automatically when page loads
+        fetchAPOD();
+
+        // 4. Fun Fact (pink star) — real facts about space
+        const funFactBtn = document.getElementById('fun-fact-btn');
+        const funFactPopup = document.getElementById('fun-fact-popup');
+        const funFactText = document.getElementById('fun-fact-text');
+
+        const spaceFacts = [
+            "Light from the Sun takes about 8 minutes to reach Earth.",
+            "There are more stars in the universe than grains of sand on every beach on Earth.",
+            "A neutron star can spin up to 600 times per second.",
+            "The largest known star, UY Scuti, is over 1,700 times wider than the Sun.",
+            "Space is completely silent — there's no atmosphere to carry sound.",
+            "Footprints left on the Moon will likely last millions of years, since there's no wind to erase them.",
+            "The Milky Way is on a slow collision course with the Andromeda galaxy.",
+            "Black holes warp time itself because of their immense gravity.",
+            "There's a giant cloud of alcohol floating in a star-forming region called Sagittarius B2.",
+            "The International Space Station travels at roughly 28,000 km/h.",
+            "Neutron stars are so dense that a teaspoon of their material would weigh billions of tons.",
+            "The observable universe is about 93 billion light-years across.",
+            "The Space has traces of hinduism being absolutely real"
+        ];
+
+        function showFunFact() {
+            funFactPopup.classList.remove('hidden');
+            funFactPopup.classList.add('show');
+            const fact = spaceFacts[Math.floor(Math.random() * spaceFacts.length)];     
+            funFactText.innerText = fact;
+        }
+
+        // 5. Planet Fact (purple star) — built-in solar system facts
+        const planetFacts = [
+            "Jupiter is so big that over 1,300 Earths could fit inside it.",
+            "A day on Venus is longer than its year.",
+            "Saturn's rings are made mostly of ice and rock.",
+            "Mars has the tallest volcano in the solar system: Olympus Mons.",
+            "The Sun makes up about 99.8% of the mass of the entire solar system.",
+            "Neptune has winds that can reach over 2,100 km/h.",
+            "Mercury has almost no atmosphere, so its temperature swings wildly.",
+            "Uranus rotates on its side, like a ball rolling around the Sun.",
+            "The Moon is slowly drifting away from Earth every year.",
+            "Earth is the only planet in our solar system not named after a mythological god.",
+            "A year on Mercury is just 88 Earth days long.",
+            "Saturn is so light it would float in water, if you had a bathtub big enough.",
+            "Sun and Moon are treated as primarily celestial deities",
+            "The Surya Siddhanta made early mathematical estimations for planetary diameters and the Earth-Moon distance.",
+            "Rahu and Ketu, representing the mathematical points of intersection of the paths of the Sun and Moon (used to explain eclipses)."
+        ];
+
+        const planetFactBtn = document.getElementById('planet-fact-btn');
+        const planetFactPopup = document.getElementById('planet-fact-popup');
+        const planetFactText = document.getElementById('planet-fact-text');
+
+        function showPlanetFact() {
+            planetFactPopup.classList.remove('hidden');
+            planetFactPopup.classList.add('show');
+            const fact = planetFacts[Math.floor(Math.random() * planetFacts.length)];
+            planetFactText.innerText = fact;
+        }
+
+        // 6. Popup open/close behavior
+        funFactBtn.addEventListener('click', () => {
+            planetFactPopup.classList.remove('show');
+            if (funFactPopup.classList.contains('show')) {
+                funFactPopup.classList.remove('show');
+            } else {
+                showFunFact();
+            }
+        });
+
+        planetFactBtn.addEventListener('click', () => {
+            funFactPopup.classList.remove('show');
+            if (planetFactPopup.classList.contains('show')) {
+                planetFactPopup.classList.remove('show');
+            } else {
+                showPlanetFact();
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.icon-wrapper')) {
+                funFactPopup.classList.remove('show');
+                planetFactPopup.classList.remove('show');
+            }
+        });
+
+        // 7. Smooth scroll helper — fast custom-eased scroll to any target section
+        function easeInOutQuad(t) {
+            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        }
+
+        function smoothScrollTo(targetEl) {
+            const targetY = targetEl.getBoundingClientRect().top + window.scrollY - 20;
+            const startY = window.scrollY;
+            const distance = targetY - startY;
+            const duration = 550; // fast scroll
+            let startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                window.scrollTo(0, startY + distance * easeInOutQuad(progress));
+                if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
+        // Solar System button
+        const solarBtn = document.getElementById('solar-system-btn');
+        const solarSection = document.getElementById('solar-system');
+        solarBtn.addEventListener('click', () => smoothScrollTo(solarSection));
+
+        // Discover the Moons button — butterflies fly across, then scroll down to the moons
+        const moonsBtn = document.getElementById('moons-btn');
+        const moonSection = document.getElementById('moons');
+        moonsBtn.addEventListener('click', () => {
+            spawnButterflies();
+            smoothScrollTo(moonSection);
+        });
+
+        // 8. Touch-device fallback: tap a card to toggle its info panel open
+        document.querySelectorAll('.planet-card, .moon-card').forEach((card) => {
+            card.addEventListener('click', () => {
+                if (window.matchMedia('(hover: none)').matches) {
+                    card.classList.toggle('touch-open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

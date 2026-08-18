@@ -1,0 +1,793 @@
+/* ========================================== */
+/* STYLES (CSS): Regal Space Theme  — Upgraded */
+/* ========================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Baloo+2:wght@400;600&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ---------- Page Background: real space photo + dark overlay + twinkle ---------- */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #000000;
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Pillars_of_creation_2014_HST_WFC3-UVIS_full-res_denoised.jpg/1280px-Pillars_of_creation_2014_HST_WFC3-UVIS_full-res_denoised.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #ffffff;
+  margin: 0;
+  padding: 30px 20px 30px 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Dark tinted overlay so the real space photo doesn't fight with the text */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at top, rgba(42, 20, 84, 0.55) 0%, rgba(10, 4, 22, 0.78) 55%, rgba(0, 0, 0, 0.88) 100%);
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Twinkling star dots layered on top of the photo */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+    radial-gradient(2px 2px at 60px 120px, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 100px 60px, #ffd700, transparent),
+    radial-gradient(1.5px 1.5px at 150px 200px, #fff, transparent),
+    radial-gradient(2px 2px at 200px 90px, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 250px 150px, #f3c623, transparent),
+    radial-gradient(1.5px 1.5px at 300px 40px, #fff, transparent),
+    radial-gradient(2px 2px at 350px 180px, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 20px 220px, #b967ff, transparent),
+    radial-gradient(1.5px 1.5px at 380px 250px, #fff, transparent);
+  background-repeat: repeat;
+  background-size: 400px 250px;
+  opacity: 0.6;
+  z-index: -1;
+  animation: twinkle 4s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes twinkle {
+  0%   { opacity: 0.35; }
+  100% { opacity: 0.85; }
+}
+
+/* ---------- Top Title Header ---------- */
+header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+h1 {
+  color: #ffffff;
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  font-size: 3.4rem;
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+header p {
+  color: #e2d4f7;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 600;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.wobble-letter {
+  display: inline-block;
+  animation: wobble 1.8s ease-in-out infinite;
+}
+
+@keyframes wobble {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25%      { transform: translateY(-3px) rotate(-3deg); }
+  75%      { transform: translateY(3px) rotate(3deg); }
+}
+
+.icon {
+  font-size: 1.6rem;
+  color: #f3f0ff;
+  margin-right: 8px;
+  filter: drop-shadow(0 0 6px rgba(200, 190, 255, 0.8));
+}
+
+/* ---------- Date Picker & Controls ---------- */
+.controls {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.controls label {
+  color: #ffd700;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+}
+
+#date-select {
+  padding: 10px 14px;
+  font-size: 1rem;
+  border: 2px solid #ffd700;
+  border-radius: 8px;
+  background-color: #1e0b36;
+  color: #ffffff;
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+#date-select::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+#fetch-date-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #1e0b36;
+  background: linear-gradient(135deg, #ffd700, #f3c623);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+#fetch-date-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+}
+
+/* ---------- Falling glitter: spawned on date change / explore click, run for 3s ---------- */
+.sparkle-fall {
+  position: fixed;
+  top: -30px;
+  pointer-events: none;
+  z-index: 60;
+  animation-name: sparkle-fall-anim;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.sparkle-fall.glint {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, #ffd700 55%, transparent 100%);
+  box-shadow: 0 0 6px 2px rgba(255, 215, 0, 0.55);
+}
+
+.sparkle-fall.spark {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.65);
+}
+
+.sparkle-fall.moon {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f3e9d2;
+  box-shadow:
+    inset 6px -2px 0 0 rgba(20, 10, 35, 0.95),
+    0 0 8px rgba(243, 233, 210, 0.55);
+}
+
+@keyframes sparkle-fall-anim {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+/* ---------- Butterflies: spawned when "Discover the Moons" is clicked ---------- */
+.butterfly {
+  position: fixed;
+  right: -60px;
+  width: 46px;
+  height: 40px;
+  z-index: 70;
+  pointer-events: none;
+  animation-name: butterfly-fly;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.butterfly svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform-origin: 50% 50%;
+  animation: butterfly-flap 0.22s ease-in-out infinite alternate;
+}
+
+@keyframes butterfly-flap {
+  0%   { transform: scaleX(1); }
+  100% { transform: scaleX(0.5); }
+}
+
+@keyframes butterfly-fly {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  8%   { opacity: 1; }
+  25%  { transform: translate(-32vw, -50px) rotate(-6deg); }
+  50%  { transform: translate(-58vw, 30px) rotate(5deg); }
+  75%  { transform: translate(-82vw, -35px) rotate(-4deg); }
+  92%  { opacity: 1; }
+  100% { transform: translate(-112vw, 15px) rotate(0deg); opacity: 0; }
+}
+
+/* ---------- Main Content Card Box ---------- */
+.card {
+  background: rgba(20, 10, 35, 0.55);
+  padding: 30px;
+  max-width: 900px;
+  width: 100%;
+  box-shadow: 0 0 40px rgba(123, 44, 191, 0.5), 0 0 20px rgba(255, 215, 0, 0.3);
+  text-align: center;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  border-radius: 16px;
+}
+
+h2 {
+  color: #ffd700;
+  font-size: 2.1rem;
+  margin-top: 0;
+  margin-bottom: 5px;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.date {
+  color: #ffffff;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+/* ---------- Translucent Media Frame — shorter and see-through ---------- */
+.media-frame {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  border-radius: 18px;
+  padding: 10px;
+  margin-top: 10px;
+  max-height: 380px;
+  overflow: hidden;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.18), 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+#apod-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin: 0;
+}
+
+#apod-video {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 16 / 9;
+  max-height: 360px;
+  height: auto;
+  border-radius: 12px;
+  margin: 0 auto;
+}
+
+.explanation {
+  text-align: left;
+  line-height: 1.8;
+  margin-top: 25px;
+  color: #f8f9fa;
+  font-size: 1.1rem;
+  padding: 0 15px;
+}
+
+#loading {
+  font-size: 1.5rem;
+  color: #ffd700;
+  font-weight: bold;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+}
+
+.hidden {
+  display: none;
+}
+
+/* ---------- Left Sidebar Column: Fun Fact / Planet Fact / Solar System / Moons ---------- */
+.sidebar-column {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 78px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  padding: 20px 0;
+  background: linear-gradient(180deg, rgba(20, 10, 35, 0.3), rgba(20, 10, 35, 0.62));
+  border-right: 1px solid rgba(255, 215, 0, 0.35);
+  box-shadow: 6px 0 24px rgba(123, 44, 191, 0.25);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  z-index: 20;
+}
+
+.sidebar-divider {
+  width: 34px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.6), transparent);
+}
+
+.icon-wrapper {
+  position: relative;
+}
+
+.icon-btn {
+  font-size: 2.3rem;
+  width: auto;
+  height: auto;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transition: transform 0.2s, filter 0.2s;
+}
+
+.icon-btn:hover {
+  transform: scale(1.2);
+}
+
+.pink-star {
+  color: #ffc2e2;
+  filter: drop-shadow(0 0 8px rgba(255, 194, 226, 0.75));
+}
+
+.purple-star {
+  color: #d3bfff;
+  filter: drop-shadow(0 0 8px rgba(211, 191, 255, 0.75));
+}
+
+/* ---------- Solar System nav button (in the sidebar column) ---------- */
+.solar-btn {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  background: linear-gradient(180deg, #ffd700, #b967ff);
+  color: #1e0b36;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  padding: 16px 8px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.solar-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.75);
+}
+
+/* ---------- Discover the Moons nav button (light purple) ---------- */
+.moons-btn {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  background: linear-gradient(180deg, #e6d4ff, #b98bff);
+  color: #2a1245;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  padding: 16px 8px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(185, 139, 255, 0.45);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.moons-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 25px rgba(185, 139, 255, 0.8);
+}
+
+.fact-popup {
+  position: absolute;
+  left: 70px;
+  top: 50%;
+  width: 230px;
+  background: rgba(30, 11, 54, 0.95);
+  border: 2px solid #ffd700;
+  border-radius: 20px;
+  padding: 16px;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) scale(0.8);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+  z-index: 25;
+}
+
+.fact-popup.show {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+  pointer-events: auto;
+}
+
+.popup-decor {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  letter-spacing: 4px;
+}
+
+.fact-popup p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #f8f9fa;
+}
+
+/* ---------- Solar System Section ---------- */
+.solar-section {
+  max-width: 1100px;
+  width: 100%;
+  margin-top: 55px;
+  padding: 40px 20px 70px;
+  text-align: center;
+  scroll-margin-top: 30px;
+}
+
+.solar-heading {
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  font-size: 2.8rem;
+  color: #ffd700;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+  margin-bottom: 6px;
+}
+
+.solar-subheading {
+  color: #e2d4f7;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 600;
+  margin-bottom: 36px;
+}
+
+.solar-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 22px;
+}
+
+/* Translucent white frame that expands on hover to reveal attached info */
+.planet-card {
+  display: flex;
+  align-items: stretch;
+  width: 160px;
+  height: 160px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.12);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+}
+
+.planet-card:hover,
+.planet-card.touch-open {
+  width: 640px;
+  max-width: 90vw;
+  box-shadow: 0 0 35px rgba(255, 255, 255, 0.28);
+}
+
+.planet-frame {
+  flex: 0 0 160px;
+  width: 160px;
+  height: 160px;
+  overflow: hidden;
+}
+
+.planet-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.planet-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  padding: 0 24px;
+  opacity: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.3s ease 0.1s;
+}
+
+.planet-card:hover .planet-info,
+.planet-card.touch-open .planet-info {
+  opacity: 1;
+  white-space: normal;
+}
+
+.planet-info h3 {
+  margin: 0 0 8px;
+  color: #ffd700;
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.3rem;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+}
+
+.planet-info p {
+  margin: 0;
+  color: #edf5fd;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+/* ---------- Moons Section ---------- */
+.moon-section {
+  margin-top: 15px;
+}
+
+.moon-heading {
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  font-size: 2.8rem;
+  color: #d9b8ff;
+  text-shadow: 0 0 12px rgba(185, 139, 255, 0.6);
+  margin-bottom: 6px;
+}
+
+.moon-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 22px;
+}
+
+/* Card shell — same expand-on-hover behavior as the planet cards */
+.moon-card {
+  display: flex;
+  align-items: center;
+  width: 190px;
+  height: 190px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(217, 184, 255, 0.35);
+  box-shadow: 0 0 20px rgba(217, 184, 255, 0.12);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+}
+
+.moon-card:hover,
+.moon-card.touch-open {
+  width: 660px;
+  max-width: 92vw;
+  box-shadow: 0 0 35px rgba(217, 184, 255, 0.3);
+}
+
+/* Star-shaped translucent frame, with a square photo centered inside it */
+.moon-frame-wrap {
+  position: relative;
+  flex: 0 0 190px;
+  width: 190px;
+  height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.moon-frame-wrap::before {
+  content: '';
+  position: absolute;
+  width: 172px;
+  height: 172px;
+  background: rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  clip-path: polygon(50% 0%, 61.8% 35.3%, 97.6% 35.3%, 68.8% 57.4%, 79.4% 91%, 50% 70.5%, 20.6% 91%, 31.2% 57.4%, 2.4% 35.3%, 38.2% 35.3%);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.moon-photo {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.45);
+}
+
+.moon-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.moon-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  padding: 0 24px;
+  opacity: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.3s ease 0.1s;
+}
+
+.moon-card:hover .moon-info,
+.moon-card.touch-open .moon-info {
+  opacity: 1;
+  white-space: normal;
+}
+
+.moon-info h3 {
+  margin: 0 0 2px;
+  color: #d9b8ff;
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.3rem;
+  text-shadow: 0 0 8px rgba(217, 184, 255, 0.5);
+}
+
+.moon-planet-tag {
+  margin: 0 0 8px;
+  color: #ffe866;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.moon-info p.moon-desc {
+  margin: 0;
+  color: #bddeff;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+/* ---------- Responsive: stack sidebar above content on small screens ---------- */
+@media (max-width: 700px) {
+  body {
+    padding: 20px 16px;
+  }
+
+  .sidebar-column {
+    position: static;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    justify-content: center;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.35);
+    box-shadow: 0 6px 24px rgba(79, 27, 125, 0.25);
+    margin-bottom: 20px;
+    gap: 22px;
+  }
+
+  .sidebar-divider {
+    width: 1px;
+    height: 30px;
+  }
+
+  .solar-btn,
+  .moons-btn {
+    writing-mode: horizontal-tb;
+    padding: 10px 14px;
+  }
+
+  .fact-popup {
+    left: 50%;
+    top: 70px;
+    transform: translateX(-50%) scale(0.8);
+  }
+
+  .fact-popup.show {
+    transform: translateX(-50%) scale(1);
+  }
+
+  .planet-card,
+  .planet-card:hover,
+  .planet-card.touch-open {
+    width: 130px;
+    height: 130px;
+  }
+
+  .planet-card:hover,
+  .planet-card.touch-open {
+    width: min(92vw, 480px);
+  }
+
+  .planet-frame {
+    flex-basis: 130px;
+    width: 130px;
+    height: 130px;
+  }
+
+  .moon-card,
+  .moon-card:hover,
+  .moon-card.touch-open {
+    width: 150px;
+    height: 150px;
+  }
+
+  .moon-card:hover,
+  .moon-card.touch-open {
+    width: min(92vw, 480px);
+  }
+
+  .moon-frame-wrap {
+    flex-basis: 150px;
+    width: 150px;
+    height: 150px;
+  }
+
+  .moon-frame-wrap::before {
+    width: 136px;
+    height: 136px;
+  }
+
+  .moon-photo {
+    width: 72px;
+    height: 72px;
+  }
+}
